@@ -55,11 +55,7 @@ Class Promotion
         array $students
     ) {
         $this->students = $students;
-        $this->countStudent = $this->countStudent();
-        $this->countMen = $this->countMen();
-        $this->countWomen = $this->countWomen();
-        $this->countDev = $this->countDev();
-        $this->countOps = $this->countOps();
+        $this->defineAttributes();
     }
 
     /**
@@ -136,13 +132,101 @@ Class Promotion
         return $this->wbStudent('w');
     }
 
+    /**
+     * Returns the age average in the promotion
+     *
+     * @return Float
+     */
+    public function ageAverage(): Float
+    {
+        $total = 0;
+        foreach ($this->students as $student) {
+            $total += $student->age;
+        }
+        return $total / $this->countStudent;
+    }
+
+    /**
+     * Method which returns the youngest age in the promotion
+     *
+     * @return integer
+     */
+    public function minimumAge(): int
+    {
+        $min = 200;
+        foreach ($this->students as $student) {
+            if ($student->age < $min) {
+                $min = $student->age;
+            }
+        }
+        return $min;
+    }
+
+    /**
+     * Method which returns the oldest age in the promotion
+     *
+     * @return integer
+     */
+    public function maximumAge(): int
+    {
+        $max = 0;
+        foreach ($this->students as $student) {
+            if ($student->age > $max) {
+                $max = $student->age;
+            }
+        }
+        return $max;
+    }
+
+    /**
+     * Method which returns how many students have their full name
+     * containing the "a" letter.
+     *
+     * @return integer
+     */
+    public function doesFullNameContainsA(): int
+    {
+        $cpt = 0;
+        foreach ($this->students as $student) {
+            $fullname = strtolower($student->lastName) . strtolower($student->firstName);
+            if (stripos($fullname, "a") != false) {
+                $cpt++;
+            }
+        }
+        return $cpt;
+    }
+
+    /**
+     * Method which returns how many students have their first name 
+     * containing the "u" letter
+     *
+     * @return integer
+     */
+    public function doesFirstNameContainsU(): int
+    {
+        $cpt = 0;
+        foreach ($this->students as $student) {
+            if (stripos(strtolower($student->firstName), "u") != false) {
+                $cpt++;
+            }
+        }
+        return $cpt;
+    }
+
+    /**
+     * Add a student
+     *
+     * @param Student $student
+     * @return void
+     */
+    public function addStudent(Student $student): void
+    {
+        $this->students[] = $student;
+        $this->defineAttributes();
+    }
+
     // @TODO
-    // moyenne d'age
-    // age minimum
-    // age maximum
     // classer les élèves par ordre alphabétique
-    // nombre d'élèves ayant un nom OU un prénom contenant la lettre "a"
-    // nombre d'élèves ayant uniquement le prénom contenant la lettre "u"
     // nombre d'élèves nés avant 1999
     // nombre d'élèves nés après 2001
     // ajouter un étudiant dans la promotion
@@ -279,23 +363,39 @@ Class Promotion
         }
         return $this->students[$idx];
     }
+
+    /**
+     * Set all the attributes values
+     *
+     * @return void
+     */
+    private function defineAttributes(): void
+    {
+        $this->countStudent = $this->countStudent();
+        $this->countMen = $this->countMen();
+        $this->countWomen = $this->countWomen();
+        $this->countDev = $this->countDev();
+        $this->countOps = $this->countOps();
+    }
 }
 
 $students = [
     new Student("kevin", "niel", "22/01/2003", "H", "DEV", [0, 10, 1, 0]),
-    new Student("enzo", "daboss", "22/01/1995", "H", "DEV", [0, 8, 1, 0]),
-    new Student("quentin", "dafirst", "22/01/2000", "H", "DEV", [5, 0, 1, 0]),
-    new Student("eric", "estmalade", "22/01/1984", "H", "DEV", [0, 18, 1, 4]),
-    new Student("Charles", "estenretard", "22/01/2010", "F", "OPS", [0, 3, 1, 0]),
+    // new Student("enzo", "dabuss", "22/01/1995", "H", "DEV", [0, 8, 1, 0]),
+    // new Student("quentin", "dafirst", "22/01/2000", "H", "DEV", [5, 0, 1, 0]),
+    // new Student("eric", "estmalade", "22/01/1984", "H", "DEV", [0, 18, 1, 4]),
+    // new Student("Charles", "estenretard", "22/01/2010", "F", "OPS", [0, 3, 1, 0]),
 ];
+
 
 $p = new Promotion($students);
 
+$st_temp = new Student("enzo", "dabuss", "22/01/1995", "H", "DEV", [0, 8, 1, 0]);
 
+$p->addStudent($st_temp);
 
 echo("<pre>");
 echo("<code>");
-var_dump($p->worstStudent());
-var_dump($p->bestStudent());
+var_dump($p);
 echo("</code>");
 echo("</pre>");
