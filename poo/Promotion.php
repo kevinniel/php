@@ -12,6 +12,27 @@ Class Promotion
     public $students;
 
     /**
+     * Define the number of students in the promotion
+     *
+     * @var int
+     */
+    public $countStudent;
+
+    /**
+     * Define the number of men in the promotion
+     *
+     * @var int
+     */
+    public $countMen;
+
+    /**
+     * Define the number of women in the promotion
+     *
+     * @var int
+     */
+    public $countWomen;
+
+    /**
      * Constructeur
      *
      * @param array $students
@@ -20,6 +41,9 @@ Class Promotion
         array $students
     ) {
         $this->students = $students;
+        $this->countStudent = $this->countStudent();
+        $this->countMen = $this->countMen();
+        $this->countWomen = $this->countWomen();
     }
 
     /**
@@ -27,7 +51,7 @@ Class Promotion
      *
      * @return int
      */
-    public function countStudent(): int
+    private function countStudent(): int
     {
         return count($this->students);
     }
@@ -38,20 +62,66 @@ Class Promotion
      *
      * @return integer
      */
-    public function countWomen(): int
+    private function countWomen(): int
+    {
+        return $this->countGenre('F');
+    }
+
+    /**
+     * Method counting the number of men in the 
+     * student array
+     *
+     * @return integer
+     */
+    private function countMen(): int
+    {
+        return $this->countGenre();
+    }
+
+    /**
+     * Method which return the number of student by sex
+     *
+     * @param string $genre
+     * @return integer
+     */
+    private function countGenre(string $genre = 'H'): int
     {
         $cpt = 0;
         foreach ($this->students as $student) {
-            if (!$student->isMale()) {
-                $cpt++;
+            if ($genre == 'H') {
+                if ($student->isMale()) {
+                    $cpt++;
+                }
+            }
+            if ($genre == 'F') {
+                if (!$student->isMale()) {
+                    $cpt++;
+                }
             }
         }
         return $cpt;
     }
 
-    // nombre d'hommes
-    // pourcentage hommes
-    // pourcentage femmes
+    /**
+     * Method which return the percentage of men in the promotion
+     *
+     * @return Float
+     */
+    public function percentageMen(): Float
+    {
+        return $this->countMen / $this->countStudent * 100;
+    }
+
+    /**
+     * Method which return the percentage of women in the promotion
+     *
+     * @return Float
+     */
+    public function percentageWomen(): Float
+    {
+        return $this->countWomen / $this->countStudent * 100;
+    }
+
     // nombre d'étudiant pour chaque spécialité
     // pourcentage de chaque spécialité
     // moyenne de la classe
@@ -65,6 +135,9 @@ Class Promotion
     // nombre d'élèves ayant uniquement le prénom contenant la lettre "u"
     // nombre d'élèves nés avant 1999
     // nombre d'élèves nés après 2001
+    // ajouter un étudiant dans la promotion
+    // modifier un étudiant dans la promotion
+    // supprimer un étudiant dans la promotion
 
 }
 
@@ -82,6 +155,6 @@ $p = new Promotion($students);
 
 echo("<pre>");
 echo("<code>");
-var_dump($p->countWomen());
+var_dump($p->percentageMen());
 echo("</code>");
 echo("</pre>");
