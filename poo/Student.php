@@ -181,15 +181,29 @@ Class Student
 		return $age;
 	}
 
+	/**
+	 * Method returning true if the current student
+	 * is a male. False if the student is a woman
+	 *
+	 * @return bool
+	 */
+	public function isMale(): bool
+	{
+		if ($this->sex == 'H') {
+			return True;
+		}
+		return False;
+	}
+
 }
 
 // On fait nos tests ici
-$st1 = new Student("kevin", "niel", "22/01/2000", "H", "DEV", [0, 0, 1, 0]);
-echo("<pre>");
-echo("<code>");
-var_dump($st1);
-echo("</code>");
-echo("</pre>");
+// $st1 = new Student("kevin", "niel", "22/01/2000", "H", "DEV", [0, 0, 1, 0]);
+// echo("<pre>");
+// echo("<code>");
+// var_dump($st1);
+// echo("</code>");
+// echo("</pre>");
 
 // afficher uniquement le prénom de l'étudiant
 // echo $st1->firstName;
